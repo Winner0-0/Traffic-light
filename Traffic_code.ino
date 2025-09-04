@@ -37,40 +37,39 @@ void loop() {
     digitalWrite(pin_led_amarillo, LOW);
     digitalWrite(pin_led_verde, LOW); 
   }
-    // Lógica de la secuencia del semáforo si está activa
+    // secuencia del semáforo si está activa
   if (semaforoActivo) {
-    // Calculamos el tiempo transcurrido desde el inicio de la secuencia
+    //tiempo transcurrido desde el inicio de la secuencia
     unsigned long tiempoTranscurrido = tiempoActual - tiempoInicioSecuencia;
 
-    // FASE 1: Rojo/red por 10 segundos adicionales
+    // FASE 1: Rojo
     if (tiempoTranscurrido >= 0 && tiempoTranscurrido < 10000) { 
-      // Ya estamos en rojo, solo aseguramos que los otros estén apagados
       digitalWrite(pin_led_rojo, HIGH);
       digitalWrite(pin_led_amarillo, LOW);
       digitalWrite(pin_led_verde, LOW);
       Serial.print("Rojo... Tiempo restante para amarillo: ");
-      Serial.print((10000 - tiempoTranscurrido) / 1000); // Convierte a segundos
+      Serial.print((10000 - tiempoTranscurrido) / 1000); 
       Serial.println(" segundos");
     }
-    // FASE 2: Amarillo/yellow por 10 segundos
-    else if (tiempoTranscurrido >= 10000 && tiempoTranscurrido < 20000) { // De 10 a 20 segundos
+    // FASE 2: Amarillo
+    else if (tiempoTranscurrido >= 10000 && tiempoTranscurrido < 20000) { 
       digitalWrite(pin_led_rojo, LOW);
-      digitalWrite(pin_led_amarillo, HIGH); // Enciende el amarillo
+      digitalWrite(pin_led_amarillo, HIGH); 
       digitalWrite(pin_led_verde, LOW);
       Serial.print("Amarillo... Tiempo restante para verde: ");
       Serial.print((20000 - tiempoTranscurrido) / 1000);
       Serial.println(" segundos");
     }
-    // FASE 3: Verde/green por 30 segundos
-    else if (tiempoTranscurrido >= 20000 && tiempoTranscurrido < 50000) { // De 20 a 50 segundos (20+30=50)
+    // FASE 3: Verde
+    else if (tiempoTranscurrido >= 20000 && tiempoTranscurrido < 50000) { 
       digitalWrite(pin_led_rojo, LOW);
       digitalWrite(pin_led_amarillo, LOW);
-      digitalWrite(pin_led_verde, HIGH); // Enciende el verde
+      digitalWrite(pin_led_verde, HIGH); 
       Serial.print("Verde... Tiempo restante para rojo: ");
       Serial.print((50000 - tiempoTranscurrido) / 1000);
       Serial.println(" segundos");
     }
-    // FASE 4: Go back to red and restart
+    // FASE 4: otra vez
     else if (tiempoTranscurrido >= 50000) {
       Serial.println("Fin de la secuencia. Volviendo a Rojo.");
       digitalWrite(pin_led_rojo, HIGH);
